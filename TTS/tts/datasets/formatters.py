@@ -297,6 +297,27 @@ def nancy(root_path, meta_file, **kwargs):  # pylint: disable=unused-argument
             items.append({"text": text, "audio_file": wav_file, "speaker_name": speaker_name, "root_path": root_path})
     return items
 
+def common_voice_dl(root_path, meta_file, ignored_speakers=None):
+    """Normalize the common voice meta data file to TTS format."""
+    txt_file = os.path.join(root_path, meta_file)
+    items = []
+    with open(txt_file, "r", encoding="utf-8") as ttf:
+        for line in ttf:
+            if line.startswith("original_sentence_id"):
+                continue
+            cols = line.split("\t")
+            text = cols[1]
+            speaker_name = "mozilla"
+            # ignore speakers
+            if isinstance(ignored_speakers, list):
+                if speaker_name in ignored_speakers:
+                    continue
+            wav_file = os.path.join(root_path, "clips", cols[1].replace(".mp3", ".wav"))
+            items.append(
+                {"text": text, "audio_file": wav_file, "speaker_name": speaker_name, "root_path": root_path}
+            )
+    return items
+
 
 def common_voice(root_path, meta_file, ignored_speakers=None):
     """Normalize the common voice meta data file to TTS format."""
