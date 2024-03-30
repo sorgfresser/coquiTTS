@@ -390,8 +390,8 @@ def hui(root_path, meta_files=None, ignored_speakers=None):
             for line in ttf:
                 cols = line.split("|")
                 file_name = cols[0]
-                speaker_name = os.path.join(os.path.join(meta_file, os.pardir), os.pardir)
-                book_name = os.path.join(os.path.join(meta_file, os.pardir))
+                speaker_name = os.path.basename(os.path.abspath(os.path.join(os.path.join(meta_file, os.pardir), os.pardir)))
+                book_name = os.path.basename(os.path.abspath(os.path.join(meta_file, os.pardir)))
                 wav_file = os.path.join(root_path, speaker_name, book_name, "wavs", file_name + ".wav")
                 text = cols[1]
                 # ignore speakers
